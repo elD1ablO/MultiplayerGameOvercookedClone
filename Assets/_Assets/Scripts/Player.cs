@@ -36,7 +36,6 @@ public class Player : MonoBehaviour
         Vector3 moveDirection = new Vector3(inputVector.x, 0, inputVector.y);
         transform.position += moveDirection * movementSpeed * Time.deltaTime;
 
-
         transform.forward = Vector3.Slerp(transform.forward, moveDirection, Time.deltaTime * rotationSpeed);
     }
 }
