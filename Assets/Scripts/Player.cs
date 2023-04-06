@@ -20,6 +20,8 @@ public class Player : MonoBehaviour, IKitchenObjectParent
     [SerializeField] private Transform kitchenObjectHoldPoint;
 
     private bool isWalking;
+    private bool isCarrying;
+
     private Vector3 lastInteractDirection;
 
     private BaseCounter selectedCounter;
@@ -124,6 +126,8 @@ public class Player : MonoBehaviour, IKitchenObjectParent
 
         isWalking = moveDirection != Vector3.zero;
 
+        isCarrying = HasKitchenObject();                      
+        
         transform.forward = Vector3.Slerp(transform.forward, moveDirection, Time.deltaTime * rotationSpeed);
     }
 
@@ -131,6 +135,11 @@ public class Player : MonoBehaviour, IKitchenObjectParent
     {
         return isWalking;
     }
+    public bool IsCarrying()
+    {
+        return isCarrying;
+    }    
+
     private void GameInputHandler_OnInteractAction(object sender, EventArgs e)
     {
         if (selectedCounter != null)
