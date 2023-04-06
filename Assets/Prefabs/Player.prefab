@@ -41,6 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4640186265327239182}
   - component: {fileID: 2642479970196240283}
+  - component: {fileID: 5290644923210036347}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -84,6 +85,18 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   kitchenObjectHoldPoint: {fileID: 2719436236103665515}
+--- !u!114 &5290644923210036347
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2599677727221169126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0f7b5a7466091649a1bb0cb480efc2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &3713739874672578923
 PrefabInstance:
   m_ObjectHideFlags: 0
