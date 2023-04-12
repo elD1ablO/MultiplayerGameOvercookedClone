@@ -17,7 +17,7 @@ public class LoaderCallback : MonoBehaviour
     {
         Time.timeScale = 1f;
                
-        loadingProgress.fillAmount += Time.deltaTime * 2f;        
+        loadingProgress.fillAmount += Time.deltaTime * 1f;        
         
         if (loadingProgress.fillAmount > 0.95f)
         {
