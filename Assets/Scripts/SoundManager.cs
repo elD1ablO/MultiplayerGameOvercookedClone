@@ -10,6 +10,8 @@ public class SoundManager : MonoBehaviour
 
     [SerializeField] private AudioClipRefsSO audioClipRefsSO;
 
+    private float volume;
+
     private void Awake()
     {
         Instance = this;
@@ -70,5 +72,5 @@ public class SoundManager : MonoBehaviour
     public void PlayFootstepsSound(Vector3 position, float volume = 1f)
     {
         PlaySound(audioClipRefsSO.footstep, position, volume);
-    }
+    }        
 }
