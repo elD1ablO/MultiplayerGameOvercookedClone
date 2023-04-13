@@ -3,11 +3,28 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameOverUI : MonoBehaviour
 {
+    [SerializeField] private Button restartButton;
+    [SerializeField] private Button mainMenuButton;
+
     [SerializeField] private TextMeshProUGUI recipeCompletedText;
 
+    private void Awake()
+    {
+        restartButton.onClick.AddListener(() =>
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        });
+
+        mainMenuButton.onClick.AddListener(() =>
+        {
+            SceneLoader.LoadScene(SceneLoader.Scene.MainMenuScene);
+        });        
+    }
 
     private void Start()
     {
