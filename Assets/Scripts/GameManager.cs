@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
     private State state;
 
     private float waitingToStartTimer = 1f;
-    private float countdownToStartTimer = 3f;
+    private float countdownToStartTimer = 1f;
     private float gamePlayingTimer;
     private bool isGamePaused = false;
 
@@ -37,8 +37,10 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        GameInputHandler.Instance.OnPauseAction += GameInputHandler_OnPauseAction;
-    }    
+        GameInputHandler.Instance.OnPauseAction += GameInputHandler_OnPauseAction;        
+    }
+
+   
 
     private void Update()
     {
@@ -75,6 +77,7 @@ public class GameManager : MonoBehaviour
         }
         Debug.Log(state);
     }
+        
 
     private void GameInputHandler_OnPauseAction(object sender, EventArgs e)
     {
