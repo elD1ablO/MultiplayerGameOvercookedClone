@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -10,6 +11,7 @@ public class KitchenGameMultiplayer : NetworkBehaviour
 
     private const int MAX_PLAYERS_AMOUNT = 4;
     [SerializeField] private KitchenObjectListSO kitchenObjectListSO;
+    [SerializeField] private List<Material> playerMaterialsList;
 
     public static KitchenGameMultiplayer Instance { get; private set; }
 
@@ -37,12 +39,29 @@ public class KitchenGameMultiplayer : NetworkBehaviour
     {
         NetworkManager.Singleton.ConnectionApprovalCallback += NetworkManager_ConnectionApprovalCallback;
         NetworkManager.Singleton.OnClientConnectedCallback += NetworkManager_OnClientConnectedCallback;
+        NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_Server_OnClientDisconnectCallback;
         NetworkManager.Singleton.StartHost();
+    }
+
+    private void NetworkManager_Server_OnClientDisconnectCallback(ulong clientID)
+    {
+        for (int i = 0; i < playerDataNetworkList.Count; i++)
+        {
+            PlayerData playerData = playerDataNetworkList[i];
+            if (playerData.clientID == clientID)
+            {
+                playerDataNetworkList.RemoveAt(i);
+            }
+        }
     }
 
     private void NetworkManager_OnClientConnectedCallback(ulong clientID)
     {
-        playerDataNetworkList.Add(new PlayerData { clientID = clientID });
+        playerDataNetworkList.Add(new PlayerData 
+        { 
+            clientID = clientID,
+            materialID = GetFirstUnusedMaterialID(),
+        });
     }
 
     private void NetworkManager_ConnectionApprovalCallback(NetworkManager.ConnectionApprovalRequest connectionApprovalRequest, NetworkManager.ConnectionApprovalResponse connectionApprovalResponse)
@@ -67,11 +86,12 @@ public class KitchenGameMultiplayer : NetworkBehaviour
     {
         OnTryToJoinGame?.Invoke(this, EventArgs.Empty);
 
-        NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallback;
+        NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_Client_OnClientDisconnectCallback;
+        
         NetworkManager.Singleton.StartClient();
     }
 
-    private void NetworkManager_OnClientDisconnectCallback(ulong clientID)
+    private void NetworkManager_Client_OnClientDisconnectCallback(ulong clientID)
     {
         OnFailToJoinGame?.Invoke(this, EventArgs.Empty);
     }
@@ -133,5 +153,102 @@ public class KitchenGameMultiplayer : NetworkBehaviour
         KitchenObject kitchenObject = kitchenObjectNetworkObject.GetComponent<KitchenObject>();
 
         kitchenObject.ClearKitchenObjectOnParent();
+    }
+
+    public bool IsPlayerIndexConnected(int playerIndex)
+    {
+        return playerIndex < playerDataNetworkList.Count;
+    }
+
+    public PlayerData GetPlayerDataFromIndex(int playerIndex)
+    {
+        return playerDataNetworkList[playerIndex];
+    }
+
+    public Material GetPlayerMaterial(int materialID)
+    {
+        return playerMaterialsList[materialID];
+    }
+
+    public PlayerData GetPlayerDataFromClientID(ulong clientID)
+    {
+        foreach (PlayerData playerData in playerDataNetworkList)
+        {
+            if (playerData.clientID == clientID)
+            {
+                return playerData;
+            }
+        }
+        return default;
+    }
+
+    public int GetPlayerDataIndexFromClientID(ulong clientID)
+    {
+        for (int i = 0; i < playerDataNetworkList.Count; i++)
+        {
+            if (playerDataNetworkList[i].clientID == clientID)
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public PlayerData GetPlayerData()
+    {
+        return GetPlayerDataFromClientID(NetworkManager.Singleton.LocalClientId);
+    }
+
+    public void ChangePlayerMaterial(int materialID)
+    {
+        ChangePlayerMaterialServerRpc(materialID);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void ChangePlayerMaterialServerRpc(int materialID, ServerRpcParams serverRpcParams = default)
+    {
+        if (!IsMaterialAvailable(materialID))
+        {
+            return;
+        }
+
+        int playerDataIndex = GetPlayerDataIndexFromClientID(serverRpcParams.Receive.SenderClientId);
+
+        PlayerData playerData = playerDataNetworkList[playerDataIndex];
+
+        playerData.materialID = materialID;
+
+        playerDataNetworkList[playerDataIndex] = playerData;
+    }
+
+    private bool IsMaterialAvailable(int materialID)
+    {
+        foreach (PlayerData playerData in playerDataNetworkList)
+        {
+            if(playerData.materialID == materialID)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private int GetFirstUnusedMaterialID()
+    {
+        for (int i = 0; i < playerMaterialsList.Count; i++)
+        {
+            if (IsMaterialAvailable(i))
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public void KickPlayer(ulong clientID)
+    {
+        NetworkManager.Singleton.DisconnectClient(clientID);
+
+        NetworkManager_Server_OnClientDisconnectCallback(clientID);
     }
 }

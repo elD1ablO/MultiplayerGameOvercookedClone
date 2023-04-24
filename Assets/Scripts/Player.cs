@@ -32,6 +32,7 @@ public class Player : NetworkBehaviour, IKitchenObjectParent
 
     [SerializeField] private Transform kitchenObjectHoldPoint;
     [SerializeField] private List<Vector3> spawnPositionList;
+    [SerializeField] private PlayerVisual playerVisual;
 
     private bool isWalking;
     private bool isCarrying;
@@ -45,6 +46,9 @@ public class Player : NetworkBehaviour, IKitchenObjectParent
     {
         GameInputHandler.Instance.OnInteractAction += GameInputHandler_OnInteractAction;
         GameInputHandler.Instance.OnInteractAlternateAction += GameInputHandler_OnInteractAlternateAction;
+
+        PlayerData playerData = KitchenGameMultiplayer.Instance.GetPlayerDataFromClientID(OwnerClientId);
+        playerVisual.SetPlayerMaterial(KitchenGameMultiplayer.Instance.GetPlayerMaterial(playerData.materialID));
      }
 
     public override void OnNetworkSpawn()
@@ -54,7 +58,7 @@ public class Player : NetworkBehaviour, IKitchenObjectParent
             LocalInstance = this;
         }
 
-        transform.position = spawnPositionList[(int)OwnerClientId];
+        transform.position = spawnPositionList[KitchenGameMultiplayer.Instance.GetPlayerDataIndexFromClientID(OwnerClientId)];
 
         OnAnyPlayerSpawned?.Invoke(this, EventArgs.Empty);
 

@@ -452,6 +452,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   kitchenObjectListSO: {fileID: 11400000, guid: 74d0b5fadda1fc84f97f601a764af133,
     type: 2}
+  playerMaterialsList:
+  - {fileID: 2100000, guid: 7d1c46152c97f4c4bbfe7d5e4596c95e, type: 2}
+  - {fileID: 2100000, guid: cc5ba20fcd17f164fadc1d8afa675b73, type: 2}
+  - {fileID: 2100000, guid: 382ddbf2744b3de47be7b63cf4d0fd12, type: 2}
+  - {fileID: 2100000, guid: 3fbc4723013d6134ba18114a6395e305, type: 2}
+  - {fileID: 2100000, guid: 97788c85ffa3b1a44a7d3fb93f8ec5e9, type: 2}
+  - {fileID: 2100000, guid: 35d7cdf99e8449f41ade08209fdc9546, type: 2}
+  - {fileID: 2100000, guid: 5bbd6722aa9719045a50ae9446452a4b, type: 2}
+  - {fileID: 2100000, guid: 26fa10a4c40808342a1dde99bd21d9e6, type: 2}
 --- !u!4 &241434855
 Transform:
   m_ObjectHideFlags: 0
