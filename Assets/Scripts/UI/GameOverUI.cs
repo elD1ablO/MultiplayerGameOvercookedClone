@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -17,11 +18,13 @@ public class GameOverUI : MonoBehaviour
     {
         restartButton.onClick.AddListener(() =>
         {
+            NetworkManager.Singleton.Shutdown();
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         });
 
         mainMenuButton.onClick.AddListener(() =>
         {
+            NetworkManager.Singleton.Shutdown();
             SceneLoader.LoadScene(SceneLoader.Scene.MainMenuScene);
         });        
     }

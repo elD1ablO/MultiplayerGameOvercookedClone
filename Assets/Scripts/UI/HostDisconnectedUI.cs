@@ -16,7 +16,7 @@ public class HostDisconnectedUI : MonoBehaviour
 
         mainMenuButton.onClick.AddListener(() =>
         {
-
+            NetworkManager.Singleton.Shutdown();
             SceneLoader.LoadScene(SceneLoader.Scene.MainMenuScene);
         });
     }

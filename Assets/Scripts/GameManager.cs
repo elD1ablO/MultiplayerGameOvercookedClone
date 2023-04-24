@@ -38,7 +38,8 @@ public class GameManager : NetworkBehaviour
     private bool isLocalGamePaused = false;
     private bool isLocalPlayerReady;
 
-    [SerializeField] private float gamePlayingTimerMax = 10f;    
+    [SerializeField] private float gamePlayingTimerMax = 10f;
+    [SerializeField] private Transform playerPrefab;
 
     
     private void Awake()
@@ -57,6 +58,16 @@ public class GameManager : NetworkBehaviour
         if (IsServer)
         {
             NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallback;
+            NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += SceneManager_OnLoadEventCompleted;
+        }
+    }
+
+    private void SceneManager_OnLoadEventCompleted(string sceneName, UnityEngine.SceneManagement.LoadSceneMode loadSceneMode, List<ulong> clientsCompleted, List<ulong> clientsTimedOut)
+    {
+        foreach (ulong clientID in NetworkManager.Singleton.ConnectedClientsIds)
+        {
+            Transform playerTransform = Instantiate(playerPrefab);
+            playerTransform.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientID, true);
         }
     }
 
@@ -194,6 +205,10 @@ public class GameManager : NetworkBehaviour
         return state.Value == State.GameOver;
     }
 
+    public bool IsWaitiongToStart()
+    {
+        return state.Value == State.WaitingToStart;
+    }
     public bool IsLocalPlayerReady()
     {
         return isLocalPlayerReady;
