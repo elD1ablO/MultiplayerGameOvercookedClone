@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,11 +13,14 @@ public class CharacterSelectPlayer : MonoBehaviour
     [SerializeField] private PlayerVisual playerVisual;
     [SerializeField] private Button kickButton;
 
+    [SerializeField] private TextMeshPro playerNameText;
+
     private void Awake()
     {
         kickButton.onClick.AddListener(() =>
         {
             PlayerData playerData = KitchenGameMultiplayer.Instance.GetPlayerDataFromIndex(playerIndex);
+            KitchenGameLobby.Instance.KickPlayer(playerData.playerID.ToString());
             KitchenGameMultiplayer.Instance.KickPlayer(playerData.clientID);
         });
     }
@@ -50,6 +54,8 @@ public class CharacterSelectPlayer : MonoBehaviour
             PlayerData playerData = KitchenGameMultiplayer.Instance.GetPlayerDataFromIndex(playerIndex);
 
             readyGameText.SetActive(CharacterSelectReady.Instance.IsPlayerReady(playerData.clientID));
+
+            playerNameText.text = playerData.playerName.ToString();
 
             playerVisual.SetPlayerMaterial(KitchenGameMultiplayer.Instance.GetPlayerMaterial(playerData.materialID));
         }
