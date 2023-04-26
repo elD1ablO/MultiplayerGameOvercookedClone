@@ -5,8 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class HostDisconnectedUI : MonoBehaviour
-{
-    [SerializeField] private Button playAgainButton;
+{    
     [SerializeField] private Button mainMenuButton;
 
     private void Start()

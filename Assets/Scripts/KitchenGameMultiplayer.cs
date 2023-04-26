@@ -87,7 +87,7 @@ public class KitchenGameMultiplayer : NetworkBehaviour
 
     private void NetworkManager_ConnectionApprovalCallback(NetworkManager.ConnectionApprovalRequest connectionApprovalRequest, NetworkManager.ConnectionApprovalResponse connectionApprovalResponse)
     {
-        if (SceneManager.GetActiveScene().name == SceneLoader.Scene.CharacterSelectScene.ToString())
+        if (SceneManager.GetActiveScene().name != SceneLoader.Scene.CharacterSelectScene.ToString())
         {
             connectionApprovalResponse.Approved = false;
             connectionApprovalResponse.Reason = "Game has already started";
@@ -108,12 +108,12 @@ public class KitchenGameMultiplayer : NetworkBehaviour
         OnTryToJoinGame?.Invoke(this, EventArgs.Empty);
 
         NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_Client_OnClientDisconnectCallback;
-        NetworkManager.Singleton.OnClientConnectedCallback += NetworkManager_Server_OnClientConnectedCallback;
+        NetworkManager.Singleton.OnClientConnectedCallback += NetworkManager_Client_OnClientConnectedCallback;
 
         NetworkManager.Singleton.StartClient();
     }
 
-    private void NetworkManager_Server_OnClientConnectedCallback(ulong clientID)
+    private void NetworkManager_Client_OnClientConnectedCallback(ulong clientID)
     {
         SetPlayerNameServerRpc(GetPlayerName());
         SetPlayerIDServerRpc(AuthenticationService.Instance.PlayerId);

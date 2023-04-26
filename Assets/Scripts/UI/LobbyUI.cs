@@ -43,6 +43,7 @@ public class LobbyUI : MonoBehaviour
             KitchenGameLobby.Instance.LeaveLobby();
             SceneLoader.LoadScene(SceneLoader.Scene.MainMenuScene);
         });
+
         lobbyTemplate.gameObject.SetActive(false);
     }
 
@@ -68,7 +69,7 @@ public class LobbyUI : MonoBehaviour
     {
         foreach (Transform child in lobbyContainer)
         {
-            if(child == lobbyTemplate) continue;
+            if (child == lobbyTemplate) continue;
 
             Destroy(child.gameObject);
         }
@@ -79,5 +80,11 @@ public class LobbyUI : MonoBehaviour
             lobbyTransform.gameObject.SetActive(true);
             lobbyTransform.GetComponent<LobbyListSingleUI>().SetLobby(lobby);
         }
+    }
+
+    private void OnDestroy()
+    {
+        KitchenGameLobby.Instance.OnLobbyListChanged -= KitchenGameLobby_OnLobbyListChanged;
+
     }
 }

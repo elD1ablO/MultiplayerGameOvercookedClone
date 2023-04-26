@@ -2343,8 +2343,8 @@ RectTransform:
   - {fileID: 1323085200}
   - {fileID: 881088060}
   - {fileID: 2038476791}
-  - {fileID: 489921580}
   - {fileID: 542300130}
+  - {fileID: 489921580}
   - {fileID: 1935475078}
   - {fileID: 144189325}
   m_Father: {fileID: 973128003}
@@ -3358,7 +3358,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6960e84d07fb87f47956e7a81d71c4e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ProtocolType: 0
+  m_ProtocolType: 1
   m_MaxPacketQueueSize: 128
   m_MaxPayloadSize: 6144
   m_HeartbeatTimeoutMS: 500
@@ -4068,7 +4068,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de31a14f4bbcf134aa9ef7c480234e3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lobbyText: {fileID: 815886046}
+  lobbyNameText: {fileID: 815886046}
 --- !u!1001 &2038476790
 PrefabInstance:
   m_ObjectHideFlags: 0
