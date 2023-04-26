@@ -10,13 +10,21 @@ using UnityEditor;
 public class MainMenuUI : MonoBehaviour
 {
 
-    [SerializeField] private Button playButton;
+    [SerializeField] private Button playSingleplayerButton;
+    [SerializeField] private Button playMultiplayerButton;
     [SerializeField] private Button quitButton;
 
     private void Awake()
     {
-        playButton.onClick.AddListener(() =>
+        playSingleplayerButton.onClick.AddListener(() =>
         {
+            KitchenGameMultiplayer.playMultiplayer = false;
+            SceneLoader.LoadScene(SceneLoader.Scene.LobbyScene);
+        });
+
+        playMultiplayerButton.onClick.AddListener(() =>
+        {
+            KitchenGameMultiplayer.playMultiplayer = true;
             SceneLoader.LoadScene(SceneLoader.Scene.LobbyScene);
         });
         

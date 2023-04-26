@@ -32,6 +32,7 @@ public class LobbyCreateUI : MonoBehaviour
     private void Start()
     {
         ShowCreateLobbyCanvas(false);
+        createPublicButton.Select();
     }
 
     public void ShowCreateLobbyCanvas(bool show)
